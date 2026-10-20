@@ -1,0 +1,86 @@
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #141414;
+}
+
+.netfx-scroll,
+.netfx-scroll > .viewport {
+    -fx-background-color: #141414;
+}
+
+.netfx-scroll .scroll-bar:vertical,
+.netfx-scroll .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
+.category-filter,
+.category-filter-selected {
+    -fx-background-radius: 18;
+    -fx-padding: 8 15;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.category-filter {
+    -fx-background-color: #292929;
+    -fx-text-fill: #dddddd;
+}
+
+.category-filter:hover {
+    -fx-background-color: #3b3b3b;
+}
+
+.category-filter-selected {
+    -fx-background-color: white;
+    -fx-text-fill: #141414;
+}
+
+.carousel-arrow {
+    -fx-background-color: rgba(16, 16, 16, 0.88);
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-padding: 7 10;
+    -fx-cursor: hand;
+}
+
+.carousel-arrow:hover {
+    -fx-background-color: #e50914;
+}
+
+.movie-card {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+}
+
+.movie-card:hover {
+    -fx-background-color: #292929;
+}
+
+.netfx-combo {
+    -fx-background-color: #303030;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+}
+
+.netfx-combo .list-cell {
+    -fx-text-fill: white;
+}
+
+.netfx-combo .list-view {
+    -fx-background-color: #292929;
+}
+
+.netfx-combo .list-view .list-cell {
+    -fx-background-color: #292929;
+    -fx-text-fill: white;
+}
+
+.netfx-combo .list-view .list-cell:hover,
+.netfx-combo .list-view .list-cell:filled:selected {
+    -fx-background-color: #e50914;
+}

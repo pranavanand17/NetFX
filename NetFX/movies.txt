@@ -1,0 +1,104 @@
+# NetFX Movie Metadata
+# One record per movie. Separate records with a blank line.
+# Format: Genres, Mood, Pacing, Themes, Language
+# Use comma-separated values for multi-value fields.
+# Language is the film's original language; change it if your local file uses a dub.
+# Mood, pacing, and themes are recommendation tags, so they are intentionally descriptive.
+
+Title: Aavesham
+Genres: Action, Comedy, Crime, Drama
+Mood: Energetic, Chaotic, Funny
+Pacing: Fast-paced
+Themes: Friendship, Revenge, College Life, Gangsters
+Language: Malayalam
+
+Title: Bethlehem Kudumba Unit
+Genres: Comedy, Drama, Romance
+Mood: Feel-good, Warm, Nostalgic
+Pacing: Moderate
+Themes: First Love, Second Chances, Family, Relationships
+Language: Malayalam
+
+Title: Bro Daddy
+Genres: Comedy, Drama, Family
+Mood: Lighthearted, Funny, Warm
+Pacing: Moderate
+Themes: Family, Relationships, Parenthood, Secrets
+Language: Malayalam
+
+Title: Guruvayoorambala Nadayil
+Genres: Comedy, Drama
+Mood: Lighthearted, Chaotic, Funny
+Pacing: Fast-paced
+Themes: Marriage, Family, Mistaken Identity, Relationships
+Language: Malayalam
+
+Title: Hridayam
+Genres: Romance, Drama, Musical
+Mood: Nostalgic, Emotional, Hopeful
+Pacing: Moderate
+Themes: Coming of Age, College Life, First Love, Friendship, Personal Growth
+Language: Malayalam
+
+Title: Varane Avashyamund
+Genres: Romance, Comedy, Drama, Family
+Mood: Warm, Feel-good, Lighthearted
+Pacing: Moderate
+Themes: Family, Romance, Neighbours, Second Chances
+Language: Malayalam
+
+Title: Varshangalkku Shesham
+Genres: Comedy, Drama, Musical
+Mood: Nostalgic, Emotional, Hopeful
+Pacing: Moderate
+Themes: Friendship, Dreams, Cinema, Ambition, Time
+Language: Malayalam
+
+Title: Chainsaw Man The Movie Reze Arc
+Genres: Action, Animation, Dark Fantasy, Romance, Thriller
+Mood: Intense, Dark, Emotional
+Pacing: Fast-paced
+Themes: Devils, Love, Identity, Survival, Sacrifice
+Language: Japanese
+
+Title: Perfect Blue
+Genres: Animation, Psychological Thriller, Horror, Mystery
+Mood: Disturbing, Tense, Unsettling
+Pacing: Moderate
+Themes: Identity, Fame, Obsession, Reality, Paranoia
+Language: Japanese
+
+Title: Teenage Mutant Ninja Turtles Mutant Mayhem
+Genres: Animation, Action, Adventure, Comedy, Superhero
+Mood: Playful, Energetic, Feel-good
+Pacing: Fast-paced
+Themes: Friendship, Family, Belonging, Identity, Heroism
+Language: English
+
+Title: Transformers One
+Genres: Animation, Action, Adventure, Science Fiction
+Mood: Epic, Energetic, Emotional
+Pacing: Fast-paced
+Themes: Friendship, Betrayal, Power, Leadership, Origins
+Language: English
+
+Title: Forrest Gump
+Genres: Drama, Comedy, Romance
+Mood: Heartwarming, Emotional, Hopeful
+Pacing: Moderate
+Themes: Life, Love, Friendship, History, Perseverance
+Language: English
+
+Title: Love Lies Bleeding
+Genres: Crime, Romance, Thriller, Drama
+Mood: Dark, Intense, Gritty
+Pacing: Moderate
+Themes: Obsession, Ambition, Violence, Family, Escape
+Language: English
+
+Title: Dhurandhar
+Genres: Action, Crime, Spy Thriller, Drama
+Mood: Intense, Gritty, Suspenseful
+Pacing: Slow-Burn
+Themes: Espionage, Undercover Operations, Crime, Loyalty, Revenge
+Language: Hindi
