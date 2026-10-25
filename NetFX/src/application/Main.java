@@ -3,7 +3,9 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -21,6 +23,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -40,6 +43,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -82,6 +86,7 @@ public class Main extends Application {
 
     private Stage stage;
     private Scene scene;
+    private File libraryDirectory = new File(DRIVE_PATH);
     private MediaPlayer mediaPlayer;
     private Movie featuredMovie;
 
@@ -313,7 +318,7 @@ public class Main extends Application {
 
         movies.clear();
 
-        File drive = new File(DRIVE_PATH);
+        File drive = libraryDirectory;
 
         if (!drive.exists() || !drive.isDirectory()) {
             featuredMovie = null;
@@ -565,6 +570,14 @@ public class Main extends Application {
             showHome();
         });
 
+        Button chooseFolderButton = new Button("Choose Folder");
+        styleButton(chooseFolderButton, false);
+        chooseFolderButton.setOnAction(event -> chooseLibraryFolder());
+
+        Button addDetailsButton = new Button("Add Details");
+        styleButton(addDetailsButton, false);
+        addDetailsButton.setOnAction(event -> showMetadataForm());
+
         TextField search = new TextField();
         search.setPromptText("Search movies...");
         search.setPrefWidth(230);
@@ -593,7 +606,8 @@ public class Main extends Application {
 
         HBox nav = new HBox(
             20, logo, search, spacer,
-            profileLabel, switchProfile, refreshButton
+            profileLabel, switchProfile, chooseFolderButton,
+            addDetailsButton, refreshButton
         );
 
         nav.setAlignment(Pos.CENTER_LEFT);
@@ -698,7 +712,7 @@ public class Main extends Application {
 
             Label empty = new Label(
                 movies.isEmpty()
-                    ? "No movies found. Check that your pendrive is connected to D:\\"
+                    ? "No movies found. Choose a library folder containing your category folders."
                     : searchQuery.isEmpty()
                         ? "No movies found in " + selectedCategory + "."
                         : selectedCategory.equals("All")
@@ -788,6 +802,197 @@ public class Main extends Application {
                     ? "All categories"
                     : selectedCategory)
             );
+        }
+    }
+
+    private void chooseLibraryFolder() {
+
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("Select your movie library folder");
+
+        if (libraryDirectory.isDirectory()) {
+            chooser.setInitialDirectory(libraryDirectory);
+        }
+
+        File selectedDirectory = chooser.showDialog(stage);
+
+        if (selectedDirectory != null) {
+            libraryDirectory = selectedDirectory;
+            scanMovies();
+            showHome();
+        }
+    }
+
+    private void showMetadataForm() {
+
+        Label heading = new Label("Add movie details");
+        heading.setStyle(
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 28px;" +
+            "-fx-font-weight: bold;"
+        );
+
+        Label description = new Label(
+            "Save details for a movie in your library. Use the same title " +
+            "as its video filename so recommendations can match it."
+        );
+        description.setWrapText(true);
+        description.setMaxWidth(680);
+        description.setStyle("-fx-text-fill: " + MUTED + ";");
+
+        TextField titleField = createMetadataField("Movie title (required)");
+        TextField genresField = createMetadataField(
+            "Genres, comma-separated"
+        );
+        TextField moodsField = createMetadataField(
+            "Moods, comma-separated"
+        );
+        TextField pacingField = createMetadataField("Pacing");
+        TextField themesField = createMetadataField(
+            "Themes, comma-separated"
+        );
+        TextField languageField = createMetadataField("Language");
+
+        VBox fields = new VBox(
+            12,
+            titleField,
+            genresField,
+            moodsField,
+            pacingField,
+            themesField,
+            languageField
+        );
+
+        Label status = new Label();
+        status.setWrapText(true);
+
+        Button submit = new Button("Save Details");
+        styleButton(submit, true);
+        submit.setOnAction(event -> {
+            String title = titleField.getText().trim();
+
+            if (title.isEmpty()) {
+                showFormError(status, "Enter a movie title.");
+                titleField.requestFocus();
+                return;
+            }
+
+            if (genresField.getText().trim().isEmpty()
+                && moodsField.getText().trim().isEmpty()
+                && pacingField.getText().trim().isEmpty()
+                && themesField.getText().trim().isEmpty()
+                && languageField.getText().trim().isEmpty()) {
+                showFormError(status, "Enter at least one movie detail.");
+                return;
+            }
+
+            try {
+                appendMovieMetadata(
+                    title,
+                    genresField.getText(),
+                    moodsField.getText(),
+                    pacingField.getText(),
+                    themesField.getText(),
+                    languageField.getText()
+                );
+                scanMovies();
+
+                Alert confirmation = new Alert(Alert.AlertType.INFORMATION);
+                confirmation.setTitle("Movie details saved");
+                confirmation.setHeaderText("Data entry successful!");
+                confirmation.setContentText(
+                    "Movie details were saved to " +
+                    new File(METADATA_PATH).getAbsolutePath()
+                );
+                confirmation.showAndWait();
+                showHome();
+            } catch (IOException exception) {
+                showFormError(
+                    status,
+                    "Could not save movie details: "
+                    + exception.getMessage()
+                );
+            }
+        });
+
+        Button cancel = new Button("Cancel");
+        styleButton(cancel, false);
+        cancel.setOnAction(event -> showHome());
+
+        HBox actions = new HBox(12, submit, cancel);
+        actions.setAlignment(Pos.CENTER_LEFT);
+
+        VBox form = new VBox(
+            18, heading, description, fields, actions, status
+        );
+        form.setMaxWidth(680);
+        form.setPadding(new Insets(35));
+        form.setStyle(
+            "-fx-background-color: " + PANEL + ";" +
+            "-fx-background-radius: 8;"
+        );
+
+        StackPane page = new StackPane(form);
+        page.setPadding(new Insets(30));
+        page.setStyle("-fx-background-color: " + BACKGROUND + ";");
+        scene.setRoot(page);
+    }
+
+    private TextField createMetadataField(String prompt) {
+
+        TextField field = new TextField();
+        field.setPromptText(prompt);
+        field.setStyle(
+            "-fx-background-color: #292929;" +
+            "-fx-text-fill: white;" +
+            "-fx-prompt-text-fill: #888888;" +
+            "-fx-background-radius: 5;" +
+            "-fx-padding: 10;"
+        );
+        return field;
+    }
+
+    private void showFormError(Label status, String message) {
+        status.setText(message);
+        status.setStyle("-fx-text-fill: #ff7777;");
+    }
+
+    private void appendMovieMetadata(
+        String title,
+        String genres,
+        String moods,
+        String pacing,
+        String themes,
+        String language
+    ) throws IOException {
+
+        List<String> record = new ArrayList<>();
+        record.add("");
+        record.add("Title: " + title.trim());
+
+        addMetadataLine(record, "Genres", genres);
+        addMetadataLine(record, "Mood", moods);
+        addMetadataLine(record, "Pacing", pacing);
+        addMetadataLine(record, "Themes", themes);
+        addMetadataLine(record, "Language", language);
+
+        File metadataFile = new File(METADATA_PATH);
+        Files.write(
+            metadataFile.toPath(),
+            record,
+            StandardCharsets.UTF_8,
+            StandardOpenOption.CREATE,
+            StandardOpenOption.APPEND
+        );
+    }
+
+    private void addMetadataLine(
+        List<String> record,
+        String key,
+        String value
+    ) {
+        if (!value.trim().isEmpty()) {
+            record.add(key + ": " + value.trim());
         }
     }
 
